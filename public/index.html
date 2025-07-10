@@ -8,15 +8,36 @@
 
 <body>
   <div class="container">
-    <h1><i class="fa-solid fa-bolt"></i> 測試部屬功能 1234</h1>
-    <p>Welcome 部屬好囉 !</p>
+    <h1><i class="fa-solid fa-bolt"></i> 第一個Ａｚｕｒｅ　Ｐｒｏｊｅｃｔ</h1>
+    <p id="welcome-text">Welcome　!</p>
     <button class="fun-btn" onclick="alert('🎉 部屬成功！')">點我慶祝</button>
+    <button class="fun-btn" id="toggle-theme">切換主題</button>
+    <button class="fun-btn" id="toggle-welcome">顯示/隱藏歡迎詞</button>
     <div class="icon-row">
-      <i class="fa-solid fa-star"></i>
-      <i class="fa-solid fa-heart"></i>
-      <i class="fa-solid fa-thumbs-up"></i>
+      <i class="fa-solid fa-star" data-msg="你點了星星！"></i>
+      <i class="fa-solid fa-heart" data-msg="你點了愛心！"></i>
+      <i class="fa-solid fa-thumbs-up" data-msg="你點了讚！"></i>
     </div>
   </div>
+  <script>
+    // 主題切換
+    document.getElementById('toggle-theme').onclick = function() {
+      document.body.classList.toggle('dark-theme');
+    };
+    // 歡迎詞顯示/隱藏
+    document.getElementById('toggle-welcome').onclick = function() {
+      const p = document.getElementById('welcome-text');
+      p.style.display = (p.style.display === 'none') ? '' : 'none';
+    };
+    // icon 點擊互動
+    document.querySelectorAll('.icon-row i').forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        alert(icon.getAttribute('data-msg'));
+        icon.classList.add('clicked');
+        setTimeout(()=>icon.classList.remove('clicked'), 400);
+      });
+    });
+  </script>
 </body>
 
 </html>
