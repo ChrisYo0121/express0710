@@ -2,7 +2,7 @@
 (function() {
   const canvas = document.getElementById('fireworks-canvas');
   if (!canvas) return;
-  let ctx, W, H, fireworks = [], particles = [], timer = null;
+  let ctx, W, H, fireworks = [], particles = [], timer = null, autoTimer = null;
 
   function resize() {
     W = window.innerWidth;
@@ -105,12 +105,33 @@
     }
   }
 
+  function autoFireworks() {
+    launchFireworks();
+    autoTimer = setTimeout(autoFireworks, 1200); // 每1.2秒自動施放
+  }
+
+  function stopAutoFireworks() {
+    if (autoTimer) {
+      clearTimeout(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      stopAutoFireworks();
+    } else {
+      if (!autoTimer) autoFireworks();
+    }
+  });
+
   window.addEventListener('resize', resize);
   // 自動施放煙火
   function autoFireworks() {
     launchFireworks();
-    setTimeout(autoFireworks, 1200); // 每1.2秒自動施放
+    autoTimer = setTimeout(autoFireworks, 1200); // 每1.2秒自動施放
   }
+
   resize();
   canvas.style.display = 'block';
   ctx = canvas.getContext('2d');
