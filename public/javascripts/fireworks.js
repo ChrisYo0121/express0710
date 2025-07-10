@@ -23,14 +23,14 @@
     this.color = randomColor();
     this.exploded = false;
     this.particles = [];
-    this.vy = -7 - Math.random()*2;
+    this.vy = -3 - Math.random()*1.2; // 放慢上升速度
   }
   Firework.prototype.update = function() {
     if (!this.exploded) {
       this.y += this.vy;
       if (this.y <= this.targetY) {
         this.exploded = true;
-        for (let i=0;i<32;i++) {
+        for (let i=0;i<64;i++) { // 增加煙火粒子數
           this.particles.push(new Particle(this.x, this.y, this.color));
         }
       }
@@ -40,10 +40,10 @@
     if (!this.exploded) {
       ctx.save();
       ctx.beginPath();
-      ctx.arc(this.x, this.y, 3, 0, 2*Math.PI);
+      ctx.arc(this.x, this.y, 7, 0, 2*Math.PI); // 增加煙火主體大小
       ctx.fillStyle = this.color;
       ctx.shadowColor = this.color;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 18;
       ctx.fill();
       ctx.restore();
     }
@@ -53,15 +53,15 @@
     this.x = x;
     this.y = y;
     this.color = color;
-    this.radius = 2 + Math.random()*2;
+    this.radius = 4 + Math.random()*4; // 增加粒子大小
     this.angle = Math.random()*2*Math.PI;
-    this.speed = 2 + Math.random()*4;
+    this.speed = 1.2 + Math.random()*2.5; // 放慢粒子速度
     this.alpha = 1;
-    this.decay = 0.012 + Math.random()*0.012;
+    this.decay = 0.008 + Math.random()*0.008; // 放慢消失速度
   }
   Particle.prototype.update = function() {
     this.x += Math.cos(this.angle)*this.speed;
-    this.y += Math.sin(this.angle)*this.speed + 0.5;
+    this.y += Math.sin(this.angle)*this.speed + 0.3;
     this.alpha -= this.decay;
   };
   Particle.prototype.draw = function(ctx) {
@@ -71,7 +71,7 @@
     ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
     ctx.fillStyle = this.color;
     ctx.shadowColor = this.color;
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 12;
     ctx.fill();
     ctx.restore();
   };
@@ -92,29 +92,28 @@
         if (f.particles.length === 0) fireworks.splice(i,1);
       }
     }
-    if (fireworks.length > 0) {
-      requestAnimationFrame(animate);
-    } else {
-      canvas.style.display = 'none';
-      timer = null;
-    }
+    requestAnimationFrame(animate);
   }
 
   function launchFireworks() {
     resize();
     canvas.style.display = 'block';
     ctx = canvas.getContext('2d');
-    fireworks.length = 0;
-    for (let i=0;i<4+Math.floor(Math.random()*2);i++) {
+    // 每次多放幾組煙火
+    for (let i=0;i<8+Math.floor(Math.random()*3);i++) {
       fireworks.push(new Firework());
     }
-    if (!timer) animate();
-    setTimeout(()=>{canvas.style.display='none';}, 2200);
   }
 
   window.addEventListener('resize', resize);
-  document.getElementById('celebrate-btn').onclick = function() {
+  // 自動施放煙火
+  function autoFireworks() {
     launchFireworks();
-  };
+    setTimeout(autoFireworks, 1200); // 每1.2秒自動施放
+  }
+  resize();
+  canvas.style.display = 'block';
+  ctx = canvas.getContext('2d');
+  animate();
+  autoFireworks();
 })();
-
