@@ -8,17 +8,19 @@
 
 <body>
   <div class="container">
-    <h1><i class="fa-solid fa-bolt"></i> 第一個Ａｚｕｒｅ　Ｐｒｏｊｅｃｔ</h1>
+    <h1><i class="fa-solid fa-bolt"></i> 我的第一個部屬專案</h1>
     <p id="welcome-text">Welcome　!</p>
-    <button class="fun-btn" onclick="alert('🎉 部屬成功！')">點我慶祝</button>
+    <button class="fun-btn" id="celebrate-btn">點我慶祝</button>
     <button class="fun-btn" id="toggle-theme">切換主題</button>
     <button class="fun-btn" id="toggle-welcome">顯示/隱藏歡迎詞</button>
+    <canvas id="fireworks-canvas" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9999;pointer-events:none;"></canvas>
     <div class="icon-row">
       <i class="fa-solid fa-star" data-msg="你點了星星！"></i>
       <i class="fa-solid fa-heart" data-msg="你點了愛心！"></i>
       <i class="fa-solid fa-thumbs-up" data-msg="你點了讚！"></i>
     </div>
   </div>
+  <script src="/javascripts/fireworks.js"></script>
   <script>
     // 主題切換
     document.getElementById('toggle-theme').onclick = function() {
